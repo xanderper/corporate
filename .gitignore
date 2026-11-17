@@ -1,0 +1,80 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Turborepo
+.turbo/
+
+# Local object storage fallback (apps/services/api DocumentsModule, dev only)
+.data/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime
+pids/
+*.pid
+*.seed
+
+# Package managers
+.npm
+.yarn/
+.yarnrc.yml
+jspm_packages/
+.pnpm-store/
+
+# IDE / Editors
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Android
+*.apk
+*.aab
+.gradle/
+local.properties
+
+# Claude / Graphify
+.claude/
+graphify-out/
+
+# Build cache artifacts
+f877af51331fa77902d93fd4627f3cf0/
+db_table.json
+
+# Screenshot script output
+scripts/screenshots/
+
+# Merchant key rotation output (contains live plaintext secrets — see
+# apps/services/api/prisma/rotate-merchant-keys.ts)
+apps/services/api/prisma/rotated-merchant-keys.*.json

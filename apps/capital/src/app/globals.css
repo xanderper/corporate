@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@source "../../../../packages/ui/src";
+
+@theme {
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-fraunces);
+
+  --color-virex-forest: #17372F;
+  --color-virex-deepink: #101816;
+  --color-virex-warmwhite: #F7F8F5;
+  --color-virex-white: #FFFFFF;
+  --color-virex-stone: #D8DDD8;
+  --color-virex-sage: #9EAEA7;
+  --color-virex-warmstone: #D8D0C2;
+  --color-virex-muted: #69736E;
+
+  --color-background: var(--color-virex-warmwhite);
+  --color-foreground: var(--color-virex-deepink);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  max-width: 1280px;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-virex-forest);
+  color: var(--color-virex-warmwhite);
+}

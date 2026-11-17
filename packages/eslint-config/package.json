@@ -1,0 +1,11 @@
+{
+  "name": "@virex/eslint-config",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "eslint": "catalog:",
+    "eslint-config-next": "catalog:",
+    "eslint-config-prettier": "^9.1.0"
+  }
+}

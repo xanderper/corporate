@@ -1,0 +1,12 @@
+{
+  "name": "@virex/config",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@virex/eslint-config": "workspace:^",
+    "@virex/typescript-config": "workspace:^",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  }
+}

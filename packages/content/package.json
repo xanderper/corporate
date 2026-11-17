@@ -1,0 +1,15 @@
+{
+  "name": "@virex/content",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.ts",
+  "dependencies": {
+    "lucide-react": "catalog:"
+  },
+  "devDependencies": {
+    "@virex/eslint-config": "workspace:^",
+    "@virex/typescript-config": "workspace:^",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  }
+}
