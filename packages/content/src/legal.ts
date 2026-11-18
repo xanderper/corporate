@@ -20,6 +20,7 @@ export const CAPITAL_LEGAL_DETAILS = {
     general: "contact@virexcapital.com",
     legal: "legal@virexcapital.com",
     investments: "investments@virexcapital.com",
+    press: "press@virexcapital.com",
   },
   phone: undefined as string | undefined,
 };

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FC, ReactNode, CSSProperties, useMemo } from "react";
+import type { ReactNode } from "react";
 
 export interface FooterLink {
   name: string;
@@ -12,205 +12,98 @@ export interface FooterSection {
   links: FooterLink[];
 }
 
-export type FooterWidth =
-  | "50/50"
-  | "60/40"
-  | "40/60"
-  | "70/30"
-  | "30/70"
-  | "20/80"
-  | "80/20";
-
 export interface FooterProps {
-  brand: {
-    line1: string;
-    line2: string;
-  };
-  subtitle: string | ReactNode;
-  columns: FooterSection[][];
-  copyrightEntity: string;
-  bottomText?: ReactNode;
-  extraNote?: ReactNode;
-  gridCols?: number;
-  sectionDivider?: boolean;
-  columnWidth?: FooterWidth;
+  /** Wordmark: serif name + small-caps label, e.g. "Virex" | "Capital". */
+  brand: { name: string; label: string };
+  tagline: ReactNode;
+  /** "sans": small sage paragraph. "serif": larger Fraunces statement. */
+  taglineStyle?: "sans" | "serif";
+  sections: FooterSection[];
+  /** Column-heading / bottom-bar typeface. */
+  labelFont?: "sans" | "mono";
+  copyright: ReactNode;
+  registration?: ReactNode;
+  /** Optional legal disclaimer, rendered small above the bottom bar. */
+  note?: ReactNode;
 }
 
-/**
- * Helper to render a section's links.
- */
-const FooterLinks: FC<{ links: FooterLink[] }> = ({ links }) => (
-  <ul className="space-y-4 text-sm font-medium">
-    {links.map(({ name, href, external }, idx) => (
-      <li key={href + idx}>
-        {external ? (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-virex-sage hover:text-virex-white transition-colors"
-          >
-            {name}
-          </a>
-        ) : (
-          <Link
-            href={href}
-            className="text-virex-sage hover:text-virex-white transition-colors"
-          >
-            {name}
-          </Link>
-        )}
-      </li>
-    ))}
-  </ul>
-);
-
-/**
- * Helper to render a column of sections (single grid col, which may have multiple sub-sections)
- */
-const FooterColumn: FC<{
-  col: FooterSection[];
-  sectionDivider?: boolean;
-}> = ({ col, sectionDivider }) => {
-  return (
-    <div className={`flex flex-col ${sectionDivider ? '' : 'gap-12'}`}>
-      {col.map((section, secIdx) => {
-        const showDivider = !!sectionDivider && secIdx > 0;
-        const dividerStyles: CSSProperties | undefined = showDivider
-          ? {
-              marginTop: "28px",
-              borderTop: "1px solid rgba(255,255,255,0.08)",
-              paddingTop: "16px",
-            }
-          : undefined;
-        return (
-          <div key={section.title + secIdx} style={dividerStyles}>
-            <p className="text-[10px] font-bold tracking-widest uppercase text-virex-sage mb-6">
-              {section.title}
-            </p>
-            <FooterLinks links={section.links} />
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-
-// Helper to determine if subtitle is a primitive (string/number)
-function isPrimitive(val: any): val is string | number {
-  return (
-    typeof val === "string" ||
-    typeof val === "number"
-  );
-}
-
-// Helper to return Tailwind width classes for lg and xl based on columnWidth prop
-function getColumnWidths(columnWidth?: FooterWidth) {
-  // Default to 50/50
-  switch (columnWidth) {
-    case "60/40":
-      return {
-        brand: "lg:w-3/5 xl:w-3/5",
-        columns: "lg:w-2/5 xl:w-2/5",
-      };
-    case "40/60":
-      return {
-        brand: "lg:w-2/5 xl:w-2/5",
-        columns: "lg:w-3/5 xl:w-3/5",
-      };
-    case "70/30":
-      return {
-        brand: "lg:w-7/12 xl:w-7/12",
-        columns: "lg:w-5/12 xl:w-5/12",
-      };
-    case "30/70":
-      return {
-        brand: "lg:w-5/12 xl:w-5/12",
-        columns: "lg:w-7/12 xl:w-7/12",
-      };
-    case "20/80":
-      return {
-        brand: "lg:w-1/5 xl:w-1/5",
-        columns: "lg:w-4/5 xl:w-4/5",
-      };
-    case "80/20":
-      return {
-        brand: "lg:w-4/5 xl:w-4/5",
-        columns: "lg:w-1/5 xl:w-1/5",
-      };
-    case "50/50":
-    default:
-      return {
-        brand: "lg:w-1/2 xl:w-1/2",
-        columns: "lg:w-1/2 xl:w-1/2",
-      };
+function FooterAnchor({ link }: { link: FooterLink }) {
+  const className = "text-virex-stone transition-colors hover:text-virex-white";
+  if (link.external) {
+    return (
+      <a href={link.href} target="_blank" rel="noopener noreferrer" className={className}>
+        {link.name} <span aria-hidden="true">↗</span>
+      </a>
+    );
   }
+  return (
+    <Link href={link.href} className={className}>
+      {link.name}
+    </Link>
+  );
 }
 
-export const Footer: FC<FooterProps> = ({
+export function Footer({
   brand,
-  subtitle,
-  columns,
-  copyrightEntity,
-  bottomText = "The Netherlands",
-  extraNote,
-  gridCols,
-  sectionDivider = false,
-  columnWidth = "50/50",
-}) => {
-  // Memoize column count logic for performance
-  const colCount = useMemo(() => gridCols || columns.length, [gridCols, columns.length]);
-  const gridClass = useMemo(() => {
-    if (colCount === 1) return "sm:grid-cols-1 md:grid-cols-1";
-    if (colCount === 2) return "sm:grid-cols-2 md:grid-cols-2";
-    if (colCount === 4) return "sm:grid-cols-2 md:grid-cols-4";
-    return "sm:grid-cols-2 md:grid-cols-3";
-  }, [colCount]);
-
-  const widths = getColumnWidths(columnWidth);
+  tagline,
+  taglineStyle = "sans",
+  sections,
+  labelFont = "sans",
+  copyright,
+  registration,
+  note,
+}: FooterProps) {
+  const mono = labelFont === "mono";
+  const heading = mono
+    ? "font-mono text-[11px] uppercase tracking-[0.1em] text-virex-sage"
+    : "text-[11px] uppercase tracking-[0.24em] text-virex-sage";
 
   return (
-    <footer className="bg-virex-forest text-virex-warmwhite py-24 mt-32 border-t border-virex-stone/10">
-      <div className="container max-w-7xl">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-12 justify-between">
-          {/* Brand */}
-          <div className={`${widths.brand} flex flex-col shrink-0`}>
-            <div className="flex flex-col font-normal leading-[1.05] mb-6">
-              <span className="text-3xl tracking-tight">{brand.line1}</span>
-              <span className="text-3xl tracking-tight text-virex-sage">{brand.line2}</span>
-            </div>
-            {isPrimitive(subtitle) ? (
-              <p className="text-virex-sage text-sm max-w-xs font-normal leading-relaxed">
-                {subtitle}
-              </p>
+    <footer className="bg-virex-deepink text-virex-warmwhite">
+      <div className="container pb-10 pt-24">
+        <div className="flex flex-wrap justify-between gap-x-16 gap-y-14">
+          <div className="min-w-0 max-w-[420px] flex-[1_1_320px]">
+            <Link
+              href="/"
+              aria-label={`${brand.name} ${brand.label} — home`}
+              className="inline-flex items-center gap-3.5 text-virex-warmwhite"
+            >
+              <span className="font-serif text-[30px] leading-none tracking-[-0.01em]">{brand.name}</span>
+              <span aria-hidden="true" className="inline-block h-5 w-px bg-virex-stone/30" />
+              <span className="text-[11px] font-semibold uppercase leading-none tracking-[0.32em]">{brand.label}</span>
+            </Link>
+            {taglineStyle === "serif" ? (
+              <p className="mt-7 font-serif text-[22px] font-light leading-[1.4] text-virex-stone">{tagline}</p>
             ) : (
-              <div className="text-virex-sage text-sm max-w-xs font-normal leading-relaxed">
-                {subtitle}
-              </div>
+              <p className="mt-7 text-[15px] leading-[1.75] text-virex-sage">{tagline}</p>
             )}
           </div>
 
-          {/* Dynamic Columns */}
-          <div className={`${widths.columns} grid grid-cols-1 ${gridClass} gap-12 sm:gap-8`}>
-            {columns.map((col, colIdx) => (
-              <FooterColumn
-                key={colIdx}
-                col={col}
-                sectionDivider={sectionDivider}
-              />
+          <div className="grid min-w-0 flex-[1_1_520px] grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-10">
+            {sections.map((section) => (
+              <nav key={section.title} aria-label={section.title}>
+                <p className={`mb-5 ${heading}`}>{section.title}</p>
+                <ul className="flex flex-col gap-3.5 text-sm">
+                  {section.links.map((link) => (
+                    <li key={link.href + link.name}>
+                      <FooterAnchor link={link} />
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             ))}
           </div>
         </div>
 
-        {extraNote && (
-          <div className="mt-24 text-xs text-virex-sage font-medium max-w-3xl leading-relaxed">
-            {extraNote}
-          </div>
-        )}
+        {note && <p className="mt-20 max-w-[880px] text-xs leading-relaxed text-virex-sage/80">{note}</p>}
 
-        <div className={`${extraNote ? 'mt-8' : 'mt-24'} pt-8 border-t border-virex-white/10 flex flex-col md:flex-row justify-between items-start md:items-center text-xs text-virex-sage font-medium`}>
-          <p>© {new Date().getFullYear()} {copyrightEntity}. All rights reserved.</p>
-          <div className="mt-2 md:mt-0">{bottomText}</div>
+        <div
+          className={`${note ? "mt-10" : "mt-24"} flex flex-wrap justify-between gap-x-10 gap-y-4 border-t border-virex-stone/15 pt-7 text-virex-sage ${
+            mono ? "font-mono text-[11px] uppercase tracking-[0.06em]" : "text-[13px]"
+          }`}
+        >
+          <p>{copyright}</p>
+          {registration && <p>{registration}</p>}
         </div>
       </div>
     </footer>

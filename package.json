@@ -1,11 +1,14 @@
 {
-  "name": "virex-web",
+  "name": "virex-corporate",
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "dev:web": "turbo dev --filter=holding --filter=capital --filter=structure-builder",
+    "dev:service": "turbo dev --filter=api",
     "build": "turbo build",
     "lint": "turbo lint",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "test": "turbo test"
   },
   "devDependencies": {
     "turbo": "^2.1.2",

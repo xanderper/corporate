@@ -3,9 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "exports": {
+    "./base": "./base.js",
+    "./base.js": "./base.js",
+    "./next": "./next.js",
+    "./next.js": "./next.js"
+  },
   "dependencies": {
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
-    "eslint-config-prettier": "^9.1.0"
+    "eslint-config-prettier": "^9.1.0",
+    "typescript-eslint": "^8"
   }
 }

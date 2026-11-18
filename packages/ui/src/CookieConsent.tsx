@@ -1,24 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 
-export function CookieConsent({ storageKey }: { storageKey: string }) {
-  const [show, setShow] = useState(false);
+const subscribe = () => () => {};
 
-  useEffect(() => {
-    const consent = localStorage.getItem(storageKey);
-    if (!consent) {
-      setShow(true);
-    }
-  }, [storageKey]);
+export function CookieConsent({ storageKey }: { storageKey: string }) {
+  const [dismissed, setDismissed] = useState(false);
+  const hasConsent = useSyncExternalStore(
+    subscribe,
+    () => Boolean(localStorage.getItem(storageKey)),
+    () => true
+  );
 
   const accept = () => {
     localStorage.setItem(storageKey, "true");
-    setShow(false);
+    setDismissed(true);
   };
 
-  if (!show) return null;
+  if (hasConsent || dismissed) return null;
 
   return (
     <div className="fixed bottom-0 inset-x-0 pb-4 sm:pb-6 z-50 px-4 sm:px-6 pointer-events-none">

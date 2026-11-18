@@ -3,8 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "main": "src/index.ts",
-  "dependencies": {
-    "lucide-react": "catalog:"
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@virex/eslint-config": "workspace:^",

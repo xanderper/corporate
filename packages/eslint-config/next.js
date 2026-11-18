@@ -8,7 +8,7 @@ const config = [
   ...nextTs,
   prettier,
   {
-    ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"],
+    ignores: [".next/**", ".test-build/**", "out/**", "build/**", "next-env.d.ts"],
   },
 ];
 

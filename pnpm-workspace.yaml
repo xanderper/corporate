@@ -1,8 +1,7 @@
 packages:
-  - 'apps/*'
+  - 'apps/web/*'
+  - 'apps/service/*'
   - 'packages/*'
-  - 'packages/config/*'
-  - 'packages/content/*'
 
 catalog:
   framer-motion: "^13.4.3"
