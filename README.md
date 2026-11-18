@@ -10,8 +10,6 @@ apps/
     capital/            Next.js site — Virex Capital
     holding/            Next.js site — Virex Holding
     structure-builder/  Next.js app — Virex Structure Builder
-  service/
-    api/                NestJS API service
 packages/
   ui/                  shared React components (@virex/ui)
   content/             shared site content/copy (@virex/content)
@@ -32,5 +30,3 @@ pnpm typecheck
 
 Each app can also be run individually, e.g. `pnpm --filter capital dev`.
 
-
-holiding company -> de holding company is een company die andere companies bezit. in dit geval is dit virex holding B.V. en deze is eigenaar van Qorve, vantigo, virex capital. 
